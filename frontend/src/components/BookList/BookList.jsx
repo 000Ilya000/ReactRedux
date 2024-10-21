@@ -20,13 +20,17 @@ function BookList(props) {
                 {++i}. {book.title} by <strong>{book.author}</strong>
               </div>
               <div className="book-actions">
-                <span onClick={() => dispatch(toggleBook(book.id))}>
-                  {book.isFavorite ? (
-                    <BsBookmarkStarFill className="star-icon" />
-                  ) : (
-                    <BsBookmarkStar className="star-icon" />
-                  )}
-                </span>
+                {book.isFavorite ? (
+                  <BsBookmarkStarFill
+                    onClick={() => dispatch(toggleBook(book.id))}
+                    className="star-icon"
+                  />
+                ) : (
+                  <BsBookmarkStar
+                    onClick={() => dispatch(toggleBook(book.id))}
+                    className="star-icon"
+                  />
+                )}
                 <button onClick={() => dispatch(deleteBook(book.id))}>
                   DELETE
                 </button>
