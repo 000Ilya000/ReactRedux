@@ -41,12 +41,12 @@ function Filter(props) {
         </div>
         <div className="filter-group">
           <label htmlFor="">
-            Only Favotire
             <input
               type="checkbox"
               checked={onlyFavorite}
               onChange={() => dispatch(setOnlyFavorite())}
             />
+            Only Favotire
           </label>
         </div>
         <button type="button" onClick={() => dispatch(resetFilters())}>
