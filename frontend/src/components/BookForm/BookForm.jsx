@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import booksData from "../../data/books.json";
-import { addBook, fetchBook } from "../../redux/slices/bookSlice";
+import {
+  addBook,
+  fetchBook,
+  selectIsLoadingViaAPI,
+} from "../../redux/slices/bookSlice";
 import { setError } from "../../redux/slices/errorSlice";
 import createBookWithId from "../../utils/createBookWithId";
 import "./BookForm.css";
@@ -10,9 +14,8 @@ import "./BookForm.css";
 function BookForm(props) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoadingViaAPI = useSelector(selectIsLoadingViaAPI);
   const dispatch = useDispatch();
-  // const [formData, setFormData] = useState({})
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,15 +35,6 @@ function BookForm(props) {
     const randomBook = booksData[randomIndex];
     const randomBookWidthId = createBookWithId(randomBook, "random");
     dispatch(addBook(randomBookWidthId, "random"));
-  };
-
-  const handleAddRandomBookViaAPI = async () => {
-    try {
-      setIsLoading(true);
-      await dispatch(fetchBook("http://localhost:4000/random-book-delayed"));
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
@@ -71,10 +65,12 @@ function BookForm(props) {
         </button>
         <button
           type="button"
-          disabled={isLoading}
-          onClick={handleAddRandomBookViaAPI}
+          disabled={isLoadingViaAPI}
+          onClick={() =>
+            dispatch(fetchBook("http://localhost:4000/random-book-delayed"))
+          }
         >
-          {isLoading ? (
+          {isLoadingViaAPI ? (
             <>
               <span>Loading Book...</span>
               <FaSpinner className="spinner" />
